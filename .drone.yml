@@ -1,0 +1,9 @@
+kind: pipeline
+type: docker
+name: run-tests
+
+steps:
+  - name: tests
+    image: gradle:jdk19
+    commands:
+      - gradle test
