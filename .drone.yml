@@ -20,10 +20,7 @@ steps:
         from_secret: github_password
 
 trigger:
-  branch:
-    - main
-    - dev
-    - feature/*  
-  event:
-    - push
-    - pull_request
+  ref:
+    - refs/heads/main
+    - refs/heads/**
+    - refs/pull/*/head
