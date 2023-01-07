@@ -23,7 +23,6 @@ trigger:
   branch:
     - main
     - dev
-  include:
     - feature/*  
   event:
     - push
