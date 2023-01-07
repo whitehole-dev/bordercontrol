@@ -1,4 +1,6 @@
-[![Build Status](https://drone.n1.mommde.xyz/api/badges/whitehole-dev/bordercontrol/status.svg?ref=refs/heads/main)](https://drone.n1.mommde.xyz/whitehole-dev/bordercontrol)
+<a href="https://drone.n1.mommde.xyz/whitehole-dev/bordercontrol">
+  <img src="https://drone.n1.mommde.xyz/api/badges/whitehole-dev/bordercontrol/status.svg?ref=refs/heads/main" />
+</a>
 
 ## Bordercontrol
 Internal service that handles the authentication process.  
