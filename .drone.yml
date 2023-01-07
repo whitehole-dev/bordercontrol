@@ -3,7 +3,28 @@ type: docker
 name: run-tests
 
 steps:
-  - name: tests
+  - name: run-gradle-tests
     image: gradle:jdk19
     commands:
-      - gradle test
+      - ls
+      - ./gradlew test
+
+  - name: publish-results
+    image: plugins/gh-pages
+    settings:
+      target_branch: test-results
+      pages_directory: build/reports/tests/test/
+      username:
+        from_secret: github_username
+      password:
+        from_secret: github_password
+
+trigger:
+  branch:
+    - main
+    - dev
+  include:
+    - feature/*  
+  event:
+    - push
+    - pull_request
