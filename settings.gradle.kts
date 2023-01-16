@@ -1,14 +1,5 @@
 rootProject.name = "bordercontrol"
 
-include(
-        ":bordercontrol-common",
-        ":bordercontrol-api:core",
-        ":bordercontrol-api:java",
-        ":bordercontrol-api:kotlin",
-        ":bordercontrol-api:kotlin-coroutines"
-)
-
-
 dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
@@ -17,6 +8,11 @@ dependencyResolutionManagement {
             version("slf4j", "2.0.6")
             version("kotlin-logging", "3.0.4")
             version("stdx-bom", "1.2.1")
+            version("kmongo", "4.8.0")
+            version("datetime", "0.4.0")
+            version("mongodb-test", "1.43.0")
+
+            library("kotlin-datetime", "org.jetbrains.kotlinx", "kotlinx-datetime").versionRef("datetime")
 
             library("ktor-server-core", "io.ktor", "ktor-server-core").versionRef("ktor")
             library("ktor-server-cio", "io.ktor", "ktor-server-cio").versionRef("ktor")
@@ -33,6 +29,9 @@ dependencyResolutionManagement {
             library("stdx-envconf", "dev.schlaubi", "stdx-envconf").withoutVersion()
 
             library("kotlinlogging", "io.github.microutils", "kotlin-logging-jvm").versionRef("kotlin-logging")
+            library("kmongo-coroutine", "org.litote.kmongo", "kmongo-coroutine").versionRef("kmongo")
+
+            library("mongo-java", "de.bwaldvogel", "mongo-java-server").versionRef("mongodb-test")
         }
     }
 }

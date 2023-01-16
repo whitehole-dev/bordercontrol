@@ -10,12 +10,6 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/bordercontrol-api" />
-            <option value="$PROJECT_DIR$/bordercontrol-api/core" />
-            <option value="$PROJECT_DIR$/bordercontrol-api/java" />
-            <option value="$PROJECT_DIR$/bordercontrol-api/kotlin" />
-            <option value="$PROJECT_DIR$/bordercontrol-api/kotlin-coroutines" />
-            <option value="$PROJECT_DIR$/bordercontrol-common" />
           </set>
         </option>
       </GradleProjectSettings>

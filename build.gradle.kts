@@ -21,13 +21,13 @@ tasks {
 }
 
 dependencies {
-    implementation(project(":bordercontrol-common"))
-
+    implementation(libs.kotlin.datetime)
     implementation(libs.ktor.server.core)
     implementation(libs.ktor.server.cio)
     implementation(libs.ktor.server.configyaml)
 
     implementation(libs.slf4j.simple)
+    implementation(libs.kmongo.coroutine)
 
     implementation(libs.kotlinlogging)
 
@@ -37,6 +37,7 @@ dependencies {
 
     testImplementation(libs.ktor.server.test)
     testImplementation(libs.kotlin.test)
+    testImplementation(libs.mongo.java)
 }
 
 buildConfig {

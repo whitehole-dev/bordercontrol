@@ -8,8 +8,9 @@ import kotlin.test.assertEquals
 
 class RestApiTest {
     @Test
-    fun testGet() = testApp {
+    fun testIfAlive() = testApp {
         val response = client.get("/alive")
         assertEquals(HttpStatusCode.OK, response.status, "Checks if the service is reachable under /alive which is a public test path that should return 200 OK")
     }
+
 }
