@@ -1,14 +1,5 @@
 rootProject.name = "bordercontrol"
 
-include(
-        ":bordercontrol-common",
-        ":bordercontrol-api:core",
-        ":bordercontrol-api:java",
-        ":bordercontrol-api:kotlin",
-        ":bordercontrol-api:kotlin-coroutines"
-)
-
-
 dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
@@ -17,12 +8,22 @@ dependencyResolutionManagement {
             version("slf4j", "2.0.6")
             version("kotlin-logging", "3.0.4")
             version("stdx-bom", "1.2.1")
+            version("kmongo", "4.8.0")
+            version("datetime", "0.4.0")
+            version("mongodb-test", "1.43.0")
+
+            library("kotlin-datetime", "org.jetbrains.kotlinx", "kotlinx-datetime").versionRef("datetime")
 
             library("ktor-server-core", "io.ktor", "ktor-server-core").versionRef("ktor")
             library("ktor-server-cio", "io.ktor", "ktor-server-cio").versionRef("ktor")
             library("ktor-server-test", "io.ktor", "ktor-server-test-host").versionRef("ktor")
+            library("ktor-server-content", "io.ktor", "ktor-server-content-negotiation").versionRef("ktor")
 
-            library("ktor-server-configyaml", "io.ktor", "ktor-server-config-yaml").versionRef("ktor")
+            library("ktor-client-cio", "io.ktor", "ktor-client-cio").versionRef("ktor")
+            library("ktor-client-core", "io.ktor", "ktor-client-core").versionRef("ktor")
+            library("ktor-client-content", "io.ktor", "ktor-client-content-negotiation").versionRef("ktor")
+
+            library("ktor-serialization-kotlinx-json","io.ktor", "ktor-serialization-kotlinx-json").versionRef("ktor")
 
             library("kotlin-test", "org.jetbrains.kotlin", "kotlin-test").versionRef("kotlin")
 
@@ -33,6 +34,9 @@ dependencyResolutionManagement {
             library("stdx-envconf", "dev.schlaubi", "stdx-envconf").withoutVersion()
 
             library("kotlinlogging", "io.github.microutils", "kotlin-logging-jvm").versionRef("kotlin-logging")
+            library("kmongo-coroutine", "org.litote.kmongo", "kmongo-coroutine").versionRef("kmongo")
+
+            library("mongo-java", "de.bwaldvogel", "mongo-java-server").versionRef("mongodb-test")
         }
     }
 }

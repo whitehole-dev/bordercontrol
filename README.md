@@ -12,6 +12,10 @@ It is focused to be only used internally so by default there is an IPv6 whitelis
 - [ ] Metrics
 - [ ] REST API
 
+### Test
+The Test EcoSystem is running a Memory Based MongoDB on your local machine.  
+Using the [mongo-java-server](https://github.com/bwaldvogel/mongo-java-server) it can test real db interactions using the MongoDB protocol
+
 ### Permission System
 Each token has a list of permissions represented as a string.  
 They are formatted in lower case and trailed by a dot.  
@@ -28,6 +32,7 @@ The service runs on port 80 on basic HTTP.
 **`/verify`**  
 **GET**  
 Checks if the Bearer Token in the `Authorization` header exist.  
+This header must be formatted the following: PublicId.HourlyGeneratedTokenAsUS_ASCIIEncodeed  
 If there is an `Permissions` header, it will check all permissions that are given. Those will be split by using a semicolon (`;`).  
 Returns:  
 **200** - If exists (and Permissions exists)  
