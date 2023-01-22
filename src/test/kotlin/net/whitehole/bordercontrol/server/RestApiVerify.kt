@@ -10,7 +10,7 @@ import kotlin.test.assertNotEquals
 class RestApiVerify {
     @Test
     fun verifyInvalidToken() = testApp {
-        val response = client.get("/verify") {
+        val response = client.get("/token/verify") {
             header(Headers.AUTHORIZATION, "Im Stupid")
         }
         assertEquals(response.status, HttpStatusCode.BadRequest)
@@ -18,7 +18,7 @@ class RestApiVerify {
 
     @Test
     fun verifyEmptyToken() = testApp {
-        val response = client.get("/verify") {
+        val response = client.get("/token/verify") {
             header(Headers.AUTHORIZATION, "")
         }
         assertNotEquals(response.status, HttpStatusCode.OK)
@@ -26,7 +26,7 @@ class RestApiVerify {
 
     @Test
     fun verifyNoHeaderToken() = testApp {
-        val response = client.get("/verify")
+        val response = client.get("/token/verify")
         assertNotEquals(response.status, HttpStatusCode.OK)
     }
 }

@@ -13,7 +13,8 @@ data class PermissionModel(
         @SerialName("owner")
         @Serializable(UUIDSerializer::class)
         // token of the owner public
-        val owner: UUID,
+        val owner: UUID = UUID.randomUUID(),
         val permission: String,
-        val timestamp: Long
+        val unprotected: Boolean = false,
+        val timestamp: Long = System.currentTimeMillis()
 )

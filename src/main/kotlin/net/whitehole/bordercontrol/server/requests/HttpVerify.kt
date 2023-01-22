@@ -7,22 +7,37 @@ import io.ktor.server.routing.*
 import io.ktor.util.pipeline.*
 import io.ktor.utils.io.charsets.*
 import net.whitehole.bordercontrol.BorderControl
+import net.whitehole.bordercontrol.models.ContextualPermissionModel
+import net.whitehole.bordercontrol.models.PermissionModel
 import net.whitehole.bordercontrol.models.TokenModel
+import net.whitehole.bordercontrol.server.requests.permission.PermissionAccessRequest
+import net.whitehole.bordercontrol.server.requests.permission.handlePermissionHasAccessRequest
 import net.whitehole.bordercontrol.token.generateHourlyToken
 import net.whitehole.bordercontrol.token.isFirst30SecondsInNewHour
 import net.whitehole.bordercontrol.util.Headers
+import org.litote.kmongo.coroutine.aggregate
 import org.litote.kmongo.eq
+import org.litote.kmongo.`in`
+import org.litote.kmongo.lt
+import org.litote.kmongo.min
 import java.util.UUID
 
+
+data class GetTokenVerifyResponse(
+        val valid: Boolean = false,
+        val mismatches: List<String>
+)
 fun Route.httpVerify(borderControl: BorderControl) {
-    get("/verify") {
+    get("verify") {
         var authHeader = call.request.headers[Headers.AUTHORIZATION]
                 ?: return@get call.respond(HttpStatusCode.BadRequest)
 
         authHeader = authHeader.replace("Bearer ", "")
         val tokenHeaders = authHeader.split(".")
+
         if (tokenHeaders.isEmpty() || tokenHeaders.size == 1)
             return@get call.respond(HttpStatusCode.BadRequest)
+
         val publicId = tokenHeaders[0]
         val authToken = tokenHeaders[1]
 
@@ -36,13 +51,14 @@ fun Route.httpVerify(borderControl: BorderControl) {
             if (isFirst30SecondsInNewHour() && (!authToken.contentEquals(token.generateHourlyToken(-1.0))))
                 return@get call.respond(HttpStatusCode.Unauthorized)
 
-        val valid = token.permissions.map { it.permission }.containsAll(permissions)
-        val map = mutableMapOf(
-                "exists" to true,
-                "valid" to valid,
-                "mismatches" to permissions.filter { token.permissions.map { context -> context.permission }.contains(it) }
-        )
+        val hasAccess = handlePermissionHasAccessRequest(borderControl.collections.standalonePermissions, PermissionAccessRequest(
+                permissionsOwning = borderControl.collections.contextualPermissions.find(ContextualPermissionModel::id `in` token.permissions).toList().map { it.permission },
+                permissionsToCheck = permissions
+        ))
 
-        call.respond(if (valid) HttpStatusCode.OK else HttpStatusCode.Unauthorized, map)
+        call.respond(if (hasAccess.mismatches.isEmpty()) HttpStatusCode.OK else HttpStatusCode.Unauthorized, GetTokenVerifyResponse(
+                valid = true,
+                mismatches = hasAccess.mismatches
+        ))
     }
 }

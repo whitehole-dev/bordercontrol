@@ -11,3 +11,5 @@ fun addByteArrays(vararg arrays: ByteArray): ByteArray {
 }
 
 operator fun ByteArray.plus(byteArray: ByteArray) = addByteArrays(this, byteArray)
+
+fun ByteArray.toHex() = joinToString(separator = "") { eachByte -> "%02x".format(eachByte) }.toByteArray(Charsets.US_ASCII)

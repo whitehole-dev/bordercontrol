@@ -24,7 +24,8 @@ dependencies {
     implementation(libs.kotlin.datetime)
     implementation(libs.ktor.server.core)
     implementation(libs.ktor.server.cio)
-    implementation(libs.ktor.server.configyaml)
+    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.ktor.server.content)
 
     implementation(libs.slf4j.simple)
     implementation(libs.kmongo.coroutine)
@@ -34,6 +35,10 @@ dependencies {
     implementation(platform(libs.stdx.bom))
     implementation(libs.stdx.core)
     implementation(libs.stdx.envconf)
+
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.cio)
+    implementation(libs.ktor.client.content)
 
     testImplementation(libs.ktor.server.test)
     testImplementation(libs.kotlin.test)

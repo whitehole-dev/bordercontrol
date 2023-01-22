@@ -1,33 +1,50 @@
 package net.whitehole.bordercontrol.server
 
 import io.ktor.http.*
+import io.ktor.http.cio.*
+import io.ktor.serialization.kotlinx.json.*
+import io.ktor.server.application.*
 import io.ktor.server.application.*
 import io.ktor.server.cio.*
 import io.ktor.server.engine.*
+import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.util.pipeline.*
 import mu.KotlinLogging
 import net.whitehole.bordercontrol.BorderControl
+import net.whitehole.bordercontrol.json
+import net.whitehole.bordercontrol.server.requests.httpGenerate
 import net.whitehole.bordercontrol.server.requests.httpVerify
+import net.whitehole.bordercontrol.server.requests.permission.permissionVerify
 
 class RestApi(private val borderControl: BorderControl) {
+    lateinit var server: CIOApplicationEngine
     companion object {
         val module: Application.(BorderControl) -> Unit = { borderControl ->
+
+            install(ContentNegotiation) {
+                json(json)
+            }
+
             routing {
-                get("/alive") {
+                get("alive") {
                     call.respond(HttpStatusCode.OK)
                 }
 
-                httpVerify(borderControl)
+                route("token") {
+                    httpVerify(borderControl)
+                    httpGenerate(borderControl)
+                }
 
-                get("/about") {
-
+                route("permission") {
+                    permissionVerify(borderControl)
                 }
             }
         }
     }
-    fun launch() {
-        embeddedServer(CIO, applicationEngineEnvironment {
+    init {
+        server = embeddedServer(CIO, applicationEngineEnvironment {
             connector {
                 host = "0.0.0.0"
                 port = 8080
@@ -40,7 +57,6 @@ class RestApi(private val borderControl: BorderControl) {
             module {
                 module.invoke(this, borderControl)
             }
-
-        }).start(wait = true)
+        })
     }
 }

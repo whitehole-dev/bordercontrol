@@ -3,6 +3,7 @@ package net.whitehole.bordercontrol.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import net.whitehole.bordercontrol.serializer.UUIDSerializer
+import net.whitehole.bordercontrol.util.toHex
 import org.litote.kmongo.Id
 import org.litote.kmongo.newId
 import java.util.UUID
@@ -13,13 +14,13 @@ data class TokenModel(
         val id: Id<TokenModel> = newId(),
         // 2^(20*8) possibilities
         @SerialName("random_bytes")
-        val randomBytes: ByteArray = Random.nextBytes(20),
+        val randomBytes: ByteArray = Random.nextBytes(20).toHex(),
         @SerialName("time_created")
         val timeCreated: Long = System.currentTimeMillis(),
         @Serializable(UUIDSerializer::class)
         val publicId: UUID = UUID.randomUUID(),
         val contact: String,
-        val permissions: List<ContextualPermissionModel> = emptyList()
+        var permissions: List<Id<ContextualPermissionModel>> = emptyList()
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

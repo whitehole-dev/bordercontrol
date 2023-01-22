@@ -17,8 +17,13 @@ dependencyResolutionManagement {
             library("ktor-server-core", "io.ktor", "ktor-server-core").versionRef("ktor")
             library("ktor-server-cio", "io.ktor", "ktor-server-cio").versionRef("ktor")
             library("ktor-server-test", "io.ktor", "ktor-server-test-host").versionRef("ktor")
+            library("ktor-server-content", "io.ktor", "ktor-server-content-negotiation").versionRef("ktor")
 
-            library("ktor-server-configyaml", "io.ktor", "ktor-server-config-yaml").versionRef("ktor")
+            library("ktor-client-cio", "io.ktor", "ktor-client-cio").versionRef("ktor")
+            library("ktor-client-core", "io.ktor", "ktor-client-core").versionRef("ktor")
+            library("ktor-client-content", "io.ktor", "ktor-client-content-negotiation").versionRef("ktor")
+
+            library("ktor-serialization-kotlinx-json","io.ktor", "ktor-serialization-kotlinx-json").versionRef("ktor")
 
             library("kotlin-test", "org.jetbrains.kotlin", "kotlin-test").versionRef("kotlin")
 

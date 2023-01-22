@@ -5,6 +5,7 @@ import net.whitehole.bordercontrol.models.TokenModel
 import net.whitehole.bordercontrol.util.addByteArrays
 import java.nio.charset.Charset
 import java.security.SecureRandom
+import java.util.Calendar
 import kotlin.random.Random
 
 fun TokenModel.generateHourlyToken(relative: Double = 0.0): String {
@@ -13,7 +14,4 @@ fun TokenModel.generateHourlyToken(relative: Double = 0.0): String {
     return (hour.toString().toByteArray(Charsets.US_ASCII) + randomBytes).hash("SHA256")
 }
 
-fun isFirst30SecondsInNewHour(): Boolean {
-    val hour = (System.currentTimeMillis() / 1000 / 60 / 60) * 1000 * 60 * 60
-    return (System.currentTimeMillis() - hour) <= 30 * 1000
-}
+fun isFirst30SecondsInNewHour() = Calendar.getInstance().get(Calendar.SECOND) <= 30
