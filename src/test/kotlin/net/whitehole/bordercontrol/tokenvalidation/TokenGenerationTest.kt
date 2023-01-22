@@ -10,20 +10,21 @@ class TokenGenerationTest {
     @Test
     fun verifyGeneratedTokensAreSame() {
         val token = TokenModel(contact = "mommde@protonmail.com")
-        assertEquals(token.generateHourlyToken(), token.generateHourlyToken(), "Same in current hour")
-        assertEquals(token.generateHourlyToken(-1.0), token.generateHourlyToken(-1.0), "Same in -1 hour")
-        assertEquals(token.generateHourlyToken(-0.0), token.generateHourlyToken(0.0), "Same in current hour")
+        println(generateHourlyToken(token.randomBytes))
+        assertEquals(generateHourlyToken(token.randomBytes), generateHourlyToken(token.randomBytes), "Same in current hour")
+        assertEquals(generateHourlyToken(token.randomBytes, -1.0), generateHourlyToken(token.randomBytes, -1.0), "Same in -1 hour")
+        assertEquals(generateHourlyToken(token.randomBytes, -0.0), generateHourlyToken(token.randomBytes, 0.0), "Same in current hour")
     }
 
     @Test
     fun verifyDecimalGeneratedTokenAreSame() {
         val token = TokenModel(contact = "mommde@protonmail.com")
-        assertEquals(token.generateHourlyToken(-5.8), token.generateHourlyToken(-5.8), "Same in -5.8 decimal hour")
+        assertEquals(generateHourlyToken(token.randomBytes, -5.8), generateHourlyToken(token.randomBytes, -5.8), "Same in -5.8 decimal hour")
     }
 
     @Test
     fun testTokenAreNotEqual() {
         val token = TokenModel(contact = "idk")
-        assertNotEquals(token.generateHourlyToken(), token.generateHourlyToken(-5.2), "Token are not equal")
+        assertNotEquals(generateHourlyToken(token.randomBytes), generateHourlyToken(token.randomBytes, -5.2), "Token are not equal")
     }
 }

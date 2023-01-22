@@ -17,8 +17,9 @@ data class TokenModel(
         val randomBytes: ByteArray = Random.nextBytes(20).toHex(),
         @SerialName("time_created")
         val timeCreated: Long = System.currentTimeMillis(),
-        @Serializable(UUIDSerializer::class)
-        val publicId: UUID = UUID.randomUUID(),
+        @SerialName("public_id")
+        // Using String to avoid the UUID Representation on MongoDB
+        val publicId: String = UUID.randomUUID().toString(),
         val contact: String,
         var permissions: List<Id<ContextualPermissionModel>> = emptyList()
 ) {

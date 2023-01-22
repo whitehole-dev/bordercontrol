@@ -59,7 +59,7 @@ fun Route.httpGenerate(borderControl: BorderControl) {
         if (contextualPermissions.isNotEmpty())
             borderControl.collections.contextualPermissions.insertMany(contextualPermissions)
 
-        call.respond(PostGenerateTokenResponse(contextualPermissions.map { it.permission }, token.publicId, token.randomBytes.toString(Charsets.US_ASCII)))
+        call.respond(HttpStatusCode.Created, PostGenerateTokenResponse(contextualPermissions.map { it.permission }, UUID.fromString(token.publicId), token.randomBytes.toString(Charsets.US_ASCII)))
 
     }
 }

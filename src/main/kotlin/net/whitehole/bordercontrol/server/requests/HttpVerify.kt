@@ -6,6 +6,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.util.pipeline.*
 import io.ktor.utils.io.charsets.*
+import kotlinx.serialization.Serializable
 import net.whitehole.bordercontrol.BorderControl
 import net.whitehole.bordercontrol.models.ContextualPermissionModel
 import net.whitehole.bordercontrol.models.PermissionModel
@@ -23,6 +24,7 @@ import org.litote.kmongo.min
 import java.util.UUID
 
 
+@Serializable
 data class GetTokenVerifyResponse(
         val valid: Boolean = false,
         val mismatches: List<String>
@@ -43,18 +45,19 @@ fun Route.httpVerify(borderControl: BorderControl) {
 
         val permissions = call.request.headers[Headers.PERMISSIONS]?.split(";")?.map { it.lowercase() } ?: listOf()
 
-        val token = borderControl.collections.tokens.findOne(TokenModel::publicId eq UUID.fromString(publicId))
+        val token = borderControl.collections.tokens.findOne(TokenModel::publicId eq publicId)
                 ?: return@get call.respond(HttpStatusCode.NotFound)
 
-        val currentTimestamp = token.generateHourlyToken()
+        val currentTimestamp = generateHourlyToken(token.randomBytes)
         if (!authToken.contentEquals(currentTimestamp))
-            if (isFirst30SecondsInNewHour() && (!authToken.contentEquals(token.generateHourlyToken(-1.0))))
+            if (isFirst30SecondsInNewHour() && (!authToken.contentEquals(generateHourlyToken(token.randomBytes, -1.0))))
                 return@get call.respond(HttpStatusCode.Unauthorized)
 
         val hasAccess = handlePermissionHasAccessRequest(borderControl.collections.standalonePermissions, PermissionAccessRequest(
                 permissionsOwning = borderControl.collections.contextualPermissions.find(ContextualPermissionModel::id `in` token.permissions).toList().map { it.permission },
                 permissionsToCheck = permissions
         ))
+
 
         call.respond(if (hasAccess.mismatches.isEmpty()) HttpStatusCode.OK else HttpStatusCode.Unauthorized, GetTokenVerifyResponse(
                 valid = true,

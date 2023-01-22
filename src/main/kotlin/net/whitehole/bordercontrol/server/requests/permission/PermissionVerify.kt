@@ -43,7 +43,6 @@ fun Route.permissionVerify(borderControl: BorderControl) {
 
 suspend fun handlePermissionHasAccessRequest(collections: CoroutineCollection<PermissionModel>, request: PermissionAccessRequest): PermissionAccessVerifyResponse {
     val permissionsToCheck = collections.find(PermissionModel::permission `in` request.permissionsToCheck).toList().distinctBy { it.permission }
-    println("permissionsToCheck=" + permissionsToCheck.toList().map { it.permission })
     val validPermissions = permissionsToCheck.filter { it.unprotected || it.permission in request.permissionsOwning }.map { it.permission }
     val nonValidPermissions = permissionsToCheck.filter { it.permission !in validPermissions }.map { it.permission }
     return PermissionAccessVerifyResponse(

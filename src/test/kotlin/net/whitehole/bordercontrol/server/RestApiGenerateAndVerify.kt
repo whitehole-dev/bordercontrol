@@ -32,7 +32,7 @@ class RestApiGenerateAndVerify {
             contentType(ContentType.Application.Json)
         }
         val body = response.body<PostGenerateTokenResponse>()
-        assertEquals(response.status, HttpStatusCode.OK, "token was generated successfully")
+        assertEquals(response.status, HttpStatusCode.Created, "token was generated successfully")
         assertEquals(body.permissions, emptyList(), "That the token has no permissions")
         println("public_id=${body.publicId}; ascii_private_token=${body.privateToken}")
     }
@@ -52,7 +52,7 @@ class RestApiGenerateAndVerify {
             contentType(ContentType.Application.Json)
         }
         val body = response.body<PostGenerateTokenResponse>()
-        assertEquals(response.status, HttpStatusCode.OK, "token was generated successfully")
+        assertEquals(response.status, HttpStatusCode.Created, "token was generated successfully")
         assertEquals(body.permissions, emptyList(), "That the token has no permissions")
         println("public_id=${body.publicId}; ascii_private_token=${body.privateToken}; permissions=${body.permissions.joinToString(",")}")
     }
@@ -77,7 +77,7 @@ class RestApiGenerateAndVerify {
         println(response.status)
         println(response.bodyAsText())
         val body = response.body<PostGenerateTokenResponse>()
-        assertEquals(response.status, HttpStatusCode.OK, "token was generated successfully")
+        assertEquals(response.status, HttpStatusCode.Created, "token was generated successfully")
         assertEquals(body.permissions, listOf("hello.tests"), "That the token has no permissions")
         println("public_id=${body.publicId}; ascii_private_token=${body.privateToken}; permissions=${body.permissions.joinToString(",")}")
     }
